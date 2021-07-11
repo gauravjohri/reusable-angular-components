@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+
+import { Component, Inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-demo',
@@ -8,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./demo.component.css']
 })
 export class DemoComponent implements OnInit {
-  data: any = [];
+  pdata: any = [];
   cdata: any = [];
   pcols = [
     { name: 'id', label: 'ID' },
@@ -25,17 +26,19 @@ export class DemoComponent implements OnInit {
     { name: 'email', label: 'Email' },
     { name: 'body', label: 'Body' },
   ]
+  popoupData: any;
   loading = 0;
   cloading = 0;
   selectedVals = [];
+  @ViewChild('secondDialog', { static: true }) secondDialog: TemplateRef<any>;
   constructor(
     private http: HttpClient,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) { }
   ngOnInit(): void {
     this.http.get("https://jsonplaceholder.typicode.com/posts").subscribe((data: any) => {
       setTimeout(() => {
-        this.data = data;
+        this.pdata = data;
         this.loading = 1;
       }, 1000);
     })
@@ -50,6 +53,8 @@ export class DemoComponent implements OnInit {
   }
   test(ev: any) {
     console.log(ev);
+    this.popoupData = ev.row;
+    this.dialog.open(this.secondDialog);
   }
   demo(ev: any) {
     console.log(ev);

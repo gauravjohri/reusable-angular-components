@@ -28,7 +28,7 @@
             <td mat-cell *matCellDef="let element">
                 <div class="example-button-row">
                     <button *ngFor="let item of actions; let i = index"
-                        (click)="getSelectedAction(element.id,item.action)" mat-raised-button
+                        (click)="getSelectedAction(element.id,item.action,element)" mat-raised-button
                         color="primary">{{item.label}}</button>
                 </div>
             </td>

@@ -1,23 +1,14 @@
-<button mat-raised-button (click)="openDialogWithTemplateRef(secondDialog)">Dialogue</button>
 <app-form></app-form>
-<app-table [data]="data" [loading]="loading" [cols]="pcols" [filter]="1" (selectedChecks)="demo($event)"
+<app-table [data]="pdata" [loading]="loading" [cols]="pcols" [filter]="1" (selectedChecks)="demo($event)"
     [actions]="pactions" (selectedAction)="test($event)" [isActions]="1" [isCheckboxRequired]="1"></app-table>
 <app-table [data]="cdata" [loading]="cloading" [cols]="ccols" [filter]="1" (selectedChecks)="demo($event)"></app-table>
+
 <ng-template #secondDialog>
-    <h2 matDialogTitle>Lovely dialog!</h2>
+    <h2 matDialogTitle>{{popoupData.title}}</h2>
     <mat-dialog-content>
-        <p>The content of this dialog came from an <code>ng-template</code>! Mind-blowing, right? (However, this wasn't
-            passed in to a method while the other one was)</p>
-        <p>The content of this dialog came from an <code>ng-template</code>! Mind-blowing, right? (However, this wasn't
-            passed in to a method while the other one was)</p>
-        <p>The content of this dialog came from an <code>ng-template</code>! Mind-blowing, right? (However, this wasn't
-            passed in to a method while the other one was)</p>
-        <p>The content of this dialog came from an <code>ng-template</code>! Mind-blowing, right? (However, this wasn't
-            passed in to a method while the other one was)</p>
-        <p>The content of this dialog came from an <code>ng-template</code>! Mind-blowing, right? (However, this wasn't
-            passed in to a method while the other one was)</p>
-        <p>The content of this dialog came from an <code>ng-template</code>! Mind-blowing, right? (However, this wasn't
-            passed in to a method while the other one was)</p>
+        <p>{{popoupData.id}}</p>
+        <p>{{popoupData.title}}</p>
+        <p>{{popoupData.body}}</p>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-button matDialogClose color="primary">close</button>

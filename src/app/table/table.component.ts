@@ -63,8 +63,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     }
     this.selectedChecks.emit(this.selected);
   }
-  getSelectedAction(ev: any, action: any) {
-    this.selectedAction.emit({ id: ev, action: action });
+  getSelectedAction(ev: any, action: any, row: any) {
+    this.selectedAction.emit({ id: ev, action: action, row: row });
   }
   selectedAllCheckboxes(event: MatCheckboxChange) {
     if (event.checked) {
