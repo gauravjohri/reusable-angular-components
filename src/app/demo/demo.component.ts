@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -28,7 +28,10 @@ export class DemoComponent implements OnInit {
   loading = 0;
   cloading = 0;
   selectedVals = [];
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private dialog: MatDialog
+  ) { }
   ngOnInit(): void {
     this.http.get("https://jsonplaceholder.typicode.com/posts").subscribe((data: any) => {
       setTimeout(() => {
@@ -56,5 +59,7 @@ export class DemoComponent implements OnInit {
     console.log(this.selectedVals);
 
   }
-
+  openDialogWithTemplateRef(templateRef: TemplateRef<any>) {
+    this.dialog.open(templateRef);
+  }
 }

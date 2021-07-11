@@ -17,6 +17,7 @@ import { TableComponent } from './table/table.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './form/form.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { FormComponent } from './form/form.component';
     FormsModule,
     ReactiveFormsModule,
     MatCheckboxModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
