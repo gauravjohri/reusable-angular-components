@@ -1,0 +1,61 @@
+<div *ngIf="filter==1">
+    <div class="example-button-row">
+        <mat-form-field>
+            <mat-label>Filter</mat-label>
+            <input matInput type="text" [(ngModel)]="filterInput" (keyup)="doFilter($event)">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="resetFilter()">Reset</button>
+    </div>
+</div>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+    <ng-container *ngIf="isCheckboxRequired==1">
+        <ng-container matColumnDef="check">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox [checked]="selectedAll" (change)="selectedAllCheckboxes($event);"></mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-checkbox [checked]="selectedAll || selected.includes(element.id)" value="{{element.id}}"
+                    (change)="selectedCheckboxes($event);">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="isActions==1">
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>
+                Actions
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <div class="example-button-row">
+                    <button *ngFor="let item of actions; let i = index"
+                        (click)="getSelectedAction(element.id,item.action)" mat-raised-button
+                        color="primary">{{item.label}}</button>
+                </div>
+            </td>
+        </ng-container>
+    </ng-container>
+
+
+
+    <ng-container *ngFor="let col of cols">
+        <ng-container matColumnDef="{{col.name}}">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{col.label}} </th>
+            <td mat-cell *matCellDef="let element"> {{element[col.name]}} </td>
+        </ng-container>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<div class="spinner-container" *ngIf="loading==0">
+    <mat-spinner color="primary" mode="indeterminate"></mat-spinner>
+</div>
+<ng-container>
+    <div class="spinner-container no-records"
+        *ngIf="loading==1 && (dataSource.data.length==0 || dataSource.filteredData.length==0 )">
+        <p>No records found!</p>
+    </div>
+</ng-container>
+
+
+<mat-paginator (page)="pageChange($event)" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
