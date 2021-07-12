@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements OnInit {
-  formFields: any = [
-    { name: 'fname', type: 'text', label: 'First Name', value: '', validators: [Validators.required] },
-    { name: 'lname', type: 'text', label: 'Last Name', value: '', validators: [Validators.required] },
-    { name: 'email', type: 'email', label: 'Email', value: '' },
-    { name: 'mobile', type: 'text', label: 'Mobile', value: '' },
-    { name: 'img', type: 'file', label: 'Image', value: '', multi: false, validators: [Validators.required] },
-  ];
+export class FormComponent implements OnInit, OnChanges {
+  @Input() formFields: any = [{}];
   form: any = {};
   registerForm: FormGroup;
-  submitted = false;
-  constructor(private formBuilder: FormBuilder) { }
+  @Input() submitted: any;
+  @Input() loading: any;
+  insubmit = false;
+  @Output() formStatus: any = new EventEmitter();
+  @Output() formData: any = new EventEmitter();
+  constructor(private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
     let formObj: any = {};
@@ -26,13 +27,30 @@ export class FormComponent implements OnInit {
       formObj[element.name] = ['', element.validators];
     });
     this.registerForm = this.formBuilder.group(formObj);
+
   }
   get f() { return this.registerForm.controls; }
   handleSubmit = () => {
-    this.submitted = true;
-    console.log(this.form);
-
-
+    this.insubmit = true;
+    this.formStatus.emit(this.registerForm.status);
+    if (this.registerForm.status == 'VALID') {
+      this.snackBar.open('Submitted Successfully!', 'Close', {
+        duration: 2000
+      });
+      this.formData.emit(this.form);
+      let formObj: any = {};
+      this.formFields.forEach((element: any) => {
+        this.form[element.name] = element.value;
+        formObj[element.name] = ['', element.validators];
+      });
+      this.registerForm = this.formBuilder.group(formObj);
+    }
+  }
+  ngOnChanges(ev: SimpleChanges) {
+    let submitted: SimpleChange = ev.submitted;
+    if (submitted.currentValue === true) {
+      this.insubmit = false;
+    }
   }
   onChange(id: any) {
     const inputNode: any = document.querySelector(`#${id}`);
@@ -42,7 +60,6 @@ export class FormComponent implements OnInit {
     else
       file = inputNode.files[0];
     this.form[id] = file;
-
   }
 
 }

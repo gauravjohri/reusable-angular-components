@@ -1,4 +1,3 @@
-<app-form></app-form>
 <app-table [data]="pdata" [loading]="loading" [cols]="pcols" [filter]="1" (selectedChecks)="demo($event)"
     [actions]="pactions" (selectedAction)="test($event)" [isActions]="1" [isCheckboxRequired]="1"></app-table>
 <app-table [data]="cdata" [loading]="cloading" [cols]="ccols" [filter]="1" (selectedChecks)="demo($event)"></app-table>
@@ -6,6 +5,8 @@
 <ng-template #secondDialog>
     <h2 matDialogTitle>{{popoupData.title}}</h2>
     <mat-dialog-content>
+        <app-form [formFields]="formFields" (formData)="formData($event);" (formStatus)="formStatus($event)"
+            [submitted]="fsubmitted" [loading]="floading"></app-form>
         <p>{{popoupData.id}}</p>
         <p>{{popoupData.title}}</p>
         <p>{{popoupData.body}}</p>

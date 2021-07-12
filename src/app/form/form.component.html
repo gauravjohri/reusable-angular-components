@@ -1,14 +1,18 @@
 <div class="example-button-row">
     <form [formGroup]="registerForm" (ngSubmit)="handleSubmit();">
+        <div class="spinner-container" *ngIf="loading">
+            <mat-spinner color="primary" mode="indeterminate"></mat-spinner>
+        </div>
         <div *ngFor="let field of formFields">
             <mat-form-field appearance="legacy" *ngIf="field.type!='file'">
                 <mat-label>{{field.label}}</mat-label>
-                <input [ngClass]="{ 'is-invalid': submitted && f[field.name].errors }" type="{{field.type}}"
+                <input [ngClass]="{ 'is-invalid': insubmit && f[field.name].errors }" type="{{field.type}}"
                     formControlName="{{field.name}}" matInput name="{{field.name}}" [(ngModel)]="form[field.name]">
             </mat-form-field>
             <input *ngIf="field.type=='file'" [multiple]="field.multi" (change)="onChange(field.name)" type="file"
                 id="{{field.name}}" />
-            <div *ngIf="submitted && f[field.name].errors" class="invalid-feedback">
+
+            <div *ngIf="insubmit && f[field.name].errors" class="invalid-feedback">
                 <div *ngIf="f[field.name].errors?.required">{{field.label}} is required!</div>
             </div>
         </div>
