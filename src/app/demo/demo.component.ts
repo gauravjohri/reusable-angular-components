@@ -34,6 +34,14 @@ export class DemoComponent implements OnInit {
     { name: 'lname', type: 'text', label: 'Last Name', value: '', validators: [Validators.required] },
     { name: 'email', type: 'email', label: 'Email', value: '' },
     { name: 'mobile', type: 'text', label: 'Mobile', value: '' },
+    {
+      name: 'gender', type: 'select', label: 'Gender', options: [
+        { label: 'Male', value: 'male' },
+        { label: 'Female', value: 'female' },
+        { label: 'Other', value: 'other' },
+      ]
+    },
+    { name: 'address', type: 'textarea', label: 'Address', value: '', validators: [Validators.required] },
     { name: 'img', type: 'file', label: 'Image', value: '', multi: true },
   ];
 

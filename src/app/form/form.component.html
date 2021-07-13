@@ -4,13 +4,27 @@
             <mat-spinner color="primary" mode="indeterminate"></mat-spinner>
         </div>
         <div *ngFor="let field of formFields">
-            <mat-form-field appearance="legacy" *ngIf="field.type!='file'">
+            <mat-form-field appearance="legacy" *ngIf="field.type!='file' && field.type!='textarea' && field.type!='select'">
                 <mat-label>{{field.label}}</mat-label>
                 <input [ngClass]="{ 'is-invalid': insubmit && f[field.name]?.errors }" type="{{field.type}}"
                     formControlName="{{field.name}}" matInput name="{{field.name}}" [(ngModel)]="form[field.name]">
             </mat-form-field>
             <input *ngIf="field.type=='file'" [multiple]="field.multi" (change)="onChange(field.name)" type="file"
                 id="{{field.name}}" />
+
+                <mat-form-field *ngIf="field.type=='textarea'" >
+                    <mat-label>{{field.label}}</mat-label>
+                    <textarea formControlName="{{field.name}}" matInput name="{{field.name}}" [(ngModel)]="form[field.name]"></textarea>
+                  </mat-form-field>
+
+                  <mat-form-field *ngIf="field.type=='select'" >
+                    <mat-select [multiple]="true" [placeholder]="'Choose'" [required]="true">
+                     <mat-option *ngFor="let option of field.options" value="{{option.value}}">{{option.label}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  
+
+                 
 
             <div *ngIf="insubmit && f[field.name]?.errors" class="invalid-feedback">
                 <div *ngIf="f[field.name].errors?.required">{{field.label}} is required!</div>
