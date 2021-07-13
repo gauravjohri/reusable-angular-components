@@ -18,7 +18,7 @@
                   </mat-form-field>
 
                   <mat-form-field *ngIf="field.type=='select'" >
-                    <mat-select [multiple]="true" [placeholder]="'Choose'" [required]="true">
+                    <mat-select [multiple]="true" [placeholder]="'Choose'" [required]="true" (selectionChange)="selectedVal($event,field.name)">
                      <mat-option *ngFor="let option of field.options" value="{{option.value}}">{{option.label}}</mat-option>
                     </mat-select>
                   </mat-form-field>

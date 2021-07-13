@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -28,6 +29,10 @@ export class FormComponent implements OnInit, OnChanges {
     });
     this.registerForm = this.formBuilder.group(formObj);
 
+  }
+  selectedVal(ev: MatSelectChange, name: string) {
+    console.log(ev.value, ev, name);
+    this.form[name] = ev.value;
   }
   get f() { return this.registerForm.controls; }
   handleSubmit = () => {
