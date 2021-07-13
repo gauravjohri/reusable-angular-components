@@ -40,8 +40,10 @@ export class FormComponent implements OnInit, OnChanges {
       this.formData.emit(this.form);
       let formObj: any = {};
       this.formFields.forEach((element: any) => {
-        this.form[element.name] = element.value;
-        formObj[element.name] = ['', element.validators];
+        if (!['file'].includes(element.type)) {
+          this.form[element.name] = element.value;
+          formObj[element.name] = ['', element.validators];
+        }
       });
       this.registerForm = this.formBuilder.group(formObj);
     }

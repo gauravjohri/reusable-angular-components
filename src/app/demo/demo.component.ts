@@ -34,7 +34,7 @@ export class DemoComponent implements OnInit {
     { name: 'lname', type: 'text', label: 'Last Name', value: '', validators: [Validators.required] },
     { name: 'email', type: 'email', label: 'Email', value: '' },
     { name: 'mobile', type: 'text', label: 'Mobile', value: '' },
-    { name: 'img', type: 'file', label: 'Image', value: '', multi: false },
+    { name: 'img', type: 'file', label: 'Image', value: '', multi: true },
   ];
 
   popoupData: any;
@@ -85,7 +85,7 @@ export class DemoComponent implements OnInit {
   }
   formData(ev: any) {
     this.fsubmitted = true;
-    console.log(ev);
+    console.log(ev.fname, ev.lname, ev);
     if (this.fstatus == 'VALID') {
       this.floading = true;
       setTimeout(() => {

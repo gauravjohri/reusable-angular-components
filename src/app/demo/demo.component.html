@@ -1,6 +1,12 @@
 <app-table [data]="pdata" [loading]="loading" [cols]="pcols" [filter]="1" (selectedChecks)="demo($event)"
     [actions]="pactions" (selectedAction)="test($event)" [isActions]="1" [isCheckboxRequired]="1"></app-table>
+
+
+
 <app-table [data]="cdata" [loading]="cloading" [cols]="ccols" [filter]="1" (selectedChecks)="demo($event)"></app-table>
+
+
+
 
 <ng-template #secondDialog>
     <h2 matDialogTitle>{{popoupData.title}}</h2>
