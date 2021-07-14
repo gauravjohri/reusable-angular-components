@@ -13,6 +13,8 @@ export class FormComponent implements OnInit, OnChanges {
   form: any = {};
   registerForm: FormGroup;
   @Input() submitted: any;
+  @Input() button: boolean = false;
+  @Input() buttonLabel: string = 'Save';
   @Input() loading: any;
   insubmit = false;
   @Output() formStatus: any = new EventEmitter();
@@ -24,8 +26,15 @@ export class FormComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     let formObj: any = {};
     this.formFields.forEach((element: any) => {
-      this.form[element.name] = element.value;
-      formObj[element.name] = ['', element.validators];
+
+      if (element.type == 'select') {
+        formObj[element.name] = [element.selected, element.validators];
+        this.form[element.name] = element.selected;
+      }
+      else {
+        formObj[element.name] = ['', element.validators];
+        this.form[element.name] = element.value;
+      }
     });
     this.registerForm = this.formBuilder.group(formObj);
 
@@ -47,7 +56,10 @@ export class FormComponent implements OnInit, OnChanges {
       this.formFields.forEach((element: any) => {
         if (!['file'].includes(element.type)) {
           this.form[element.name] = element.value;
-          formObj[element.name] = ['', element.validators];
+          if (element.type == 'select')
+            formObj[element.name] = [this.form[element.name], element.validators];
+          else
+            formObj[element.name] = ['', element.validators];
         }
       });
       this.registerForm = this.formBuilder.group(formObj);

@@ -11,8 +11,11 @@
 <ng-template #secondDialog>
     <h2 matDialogTitle>{{popoupData.title}}</h2>
     <mat-dialog-content>
+        
+        
         <app-form [formFields]="formFields" (formData)="formData($event);" (formStatus)="formStatus($event)"
-            [submitted]="fsubmitted" [loading]="floading"></app-form>
+            [submitted]="fsubmitted" [loading]="floading" [button]="button" [buttonLabel]="'Register'"></app-form>
+
         <p>{{popoupData.id}}</p>
         <p>{{popoupData.title}}</p>
         <p>{{popoupData.body}}</p>

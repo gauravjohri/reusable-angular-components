@@ -18,20 +18,16 @@
                   </mat-form-field>
 
                   <mat-form-field *ngIf="field.type=='select'" >
-                    <mat-select [multiple]="true" [placeholder]="'Choose'" [required]="true" (selectionChange)="selectedVal($event,field.name)">
+                    <mat-select  [multiple]="field.multi" [placeholder]="'Choose'" (selectionChange)="selectedVal($event,field.name)" [value]="field.selected" [formControlName]="field.name" >
                      <mat-option *ngFor="let option of field.options" value="{{option.value}}">{{option.label}}</mat-option>
                     </mat-select>
                   </mat-form-field>
-                  
-
-                 
-
-            <div *ngIf="insubmit && f[field.name]?.errors" class="invalid-feedback">
+              <div *ngIf="insubmit && f[field.name]?.errors" class="invalid-feedback">
                 <div *ngIf="f[field.name].errors?.required">{{field.label}} is required!</div>
             </div>
         </div>
         <p>
-            <button mat-raised-button color="primary">Save</button>
+            <button [disabled]="button" mat-raised-button color="primary">{{buttonLabel}}</button>
         </p>
     </form>
 </div>

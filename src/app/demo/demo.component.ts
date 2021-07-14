@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class DemoComponent implements OnInit {
   pdata: any = [];
   cdata: any = [];
+  button = false;
   pcols = [
     { name: 'id', label: 'ID' },
     { name: 'title', label: 'Title' },
@@ -39,10 +40,13 @@ export class DemoComponent implements OnInit {
         { label: 'A', value: 'a' },
         { label: 'B', value: 'b' },
         { label: 'C', value: 'c' },
-      ]
+      ],
+      selected: '',
+      multi: true,
+      validators: [Validators.required]
     },
     { name: 'address', type: 'textarea', label: 'Address', value: '', validators: [Validators.required] },
-    { name: 'img', type: 'file', label: 'Image', value: '', multi: true },
+    { name: 'img', type: 'file', label: 'Image', value: '', multi: false },
   ];
 
   popoupData: any;
@@ -93,6 +97,7 @@ export class DemoComponent implements OnInit {
   }
   formData(ev: any) {
     this.fsubmitted = true;
+    this.button = false;
     console.log(ev.fname, ev.lname, ev);
     if (this.fstatus == 'VALID') {
       this.floading = true;
