@@ -15,6 +15,8 @@ export class FormComponent implements OnInit, OnChanges {
   @Input() submitted: any;
   @Input() button: boolean = false;
   @Input() buttonLabel: string = 'Save';
+  @Input() formClass: string = '';
+  @Input() successMsg: string = 'Submitted Successfully!';
   @Input() loading: any;
   insubmit = false;
   @Output() formStatus: any = new EventEmitter();
@@ -48,8 +50,8 @@ export class FormComponent implements OnInit, OnChanges {
     this.insubmit = true;
     this.formStatus.emit(this.registerForm.status);
     if (this.registerForm.status == 'VALID') {
-      this.snackBar.open('Submitted Successfully!', 'Close', {
-        duration: 2000
+      this.snackBar.open(this.successMsg, 'Close', {
+        duration: 5000
       });
       this.formData.emit(this.form);
       let formObj: any = {};

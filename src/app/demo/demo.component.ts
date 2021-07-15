@@ -41,7 +41,7 @@ export class DemoComponent implements OnInit {
         { label: 'B', value: 'b' },
         { label: 'C', value: 'c' },
       ],
-      selected: '',
+      selected: ['a', 'b', 'c'],
       multi: true,
       validators: [Validators.required]
     },

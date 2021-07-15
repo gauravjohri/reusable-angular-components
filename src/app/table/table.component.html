@@ -1,3 +1,4 @@
+<div class="main-table-wrapper {{tableClass}}">
 <div *ngIf="filter==1">
     <div class="example-button-row">
         <mat-form-field>
@@ -59,3 +60,4 @@
 
 <mat-paginator (page)="pageChange($event)" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
 </mat-paginator>
+</div>

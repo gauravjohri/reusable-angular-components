@@ -1,5 +1,5 @@
 <app-table [data]="pdata" [loading]="loading" [cols]="pcols" [filter]="1" (selectedChecks)="demo($event)"
-    [actions]="pactions" (selectedAction)="test($event)" [isActions]="1" [isCheckboxRequired]="1"></app-table>
+    [actions]="pactions" (selectedAction)="test($event)" [isActions]="1" [isCheckboxRequired]="1" [tableClass]="'testTable'"></app-table>
 
 
 
@@ -14,13 +14,13 @@
         
         
         <app-form [formFields]="formFields" (formData)="formData($event);" (formStatus)="formStatus($event)"
-            [submitted]="fsubmitted" [loading]="floading" [button]="button" [buttonLabel]="'Register'"></app-form>
+            [submitted]="fsubmitted" [loading]="floading" [button]="button" [buttonLabel]="'Register'" [formClass]="'testForm'" [successMsg]="'Saved Data!'"></app-form>
 
         <p>{{popoupData.id}}</p>
         <p>{{popoupData.title}}</p>
         <p>{{popoupData.body}}</p>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-        <button mat-button matDialogClose color="primary">close</button>
+        <button mat-button matDialogClose color="primary">Close</button>
     </mat-dialog-actions>
 </ng-template>

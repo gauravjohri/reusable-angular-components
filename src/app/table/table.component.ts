@@ -15,6 +15,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() loading: any;
   @Input() filter: any;
   @Input() actions: any;
+  @Input() tableClass: string = '';
   @Input() cols: any = [{}];
   @Output() selectedChecks = new EventEmitter();
   displayedColumns: string[] = [];
