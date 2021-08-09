@@ -4,15 +4,24 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  styleUrls: ['./table.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() data: any = [];
   @Input() loading: any;
+  @Input() page_size: any = 10;
   @Input() filter: any;
   @Input() actions: any;
   @Input() tableClass: string = '';
@@ -23,6 +32,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   filterInput: string = '';
+  expandedElement: any | null;
+  @Input() expandedCol: any;
   @Input() isActions: number = 0;
   @Input() isCheckboxRequired: number = 0;
   selected: any[] = [];
@@ -40,7 +51,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.isCheckboxRequired == 1)
       this.displayedColumns.push("check");
     this.cols.forEach((element: any) => {
-      this.displayedColumns.push(element.name);
+      if (element.visible == true)
+        this.displayedColumns.push(element.name);
     });
     if (this.isActions == 1)
       this.displayedColumns.push("action");
@@ -83,15 +95,27 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.selectedChecks.emit(this.selected);
   }
   ngOnChanges(da: SimpleChanges) {
+    this.dataSource.data = [];
     let dat: SimpleChange = da.loading;
     if (dat.currentValue === 1) {
       this.dataSource.data = this.data;
     }
-
-
   }
+
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
+  getKeys(object: any): any {
+    return Object.keys(object);
+  }
+  checkIfkeyExists(object: any, key: any) {
+    // console.log(Object.prototype.hasOwnProperty.call(object, key));
+    return Object.prototype.hasOwnProperty.call(object, key);
+    // return Object.prototype.hasOwnProperty.call(object, key);
+  }
+  toCapitalize(value) {
+    return value[0].toUpperCase() + value.slice(1).replace('_', ' ');
+  }
+
 }

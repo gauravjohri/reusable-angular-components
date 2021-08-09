@@ -1,14 +1,18 @@
 <div class="main-table-wrapper {{tableClass}}">
 <div *ngIf="filter==1">
-    <div class="example-button-row">
+    <div class="table-button-row">
         <mat-form-field>
-            <mat-label>Filter</mat-label>
+            <mat-label>Search</mat-label>
             <input matInput type="text" [(ngModel)]="filterInput" (keyup)="doFilter($event)">
         </mat-form-field>
         <button mat-raised-button color="primary" (click)="resetFilter()">Reset</button>
+        <button mat-raised-button (click)="exporter.exportTable('xls', {fileName:'Complaints', sheet: 'Complaints'})">Excel XLS</button>
+        <button mat-raised-button (click)="exporter.exportTable('xlsx', {fileName:'Complaints', sheet: 'Complaints'})">Excel XLSX</button>
+        <button mat-raised-button (click)="exporter.exportTable('csv',{fileName:'Complaints', sheet: 'Complaints'})">Csv</button>
+    
     </div>
 </div>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+<table mat-table  [dataSource]="dataSource" matTableExporter #exporter="matTableExporter" class="tbl dt dataTable no-footer" matSort multiTemplateDataRows>
     <ng-container *ngIf="isCheckboxRequired==1">
         <ng-container matColumnDef="check">
             <th mat-header-cell *matHeaderCellDef>
@@ -27,7 +31,7 @@
                 Actions
             </th>
             <td mat-cell *matCellDef="let element">
-                <div class="example-button-row">
+                <div class="table-button-row">
                     <button *ngFor="let item of actions; let i = index"
                         (click)="getSelectedAction(element.id,item.action,element)" mat-raised-button
                         color="primary">{{item.label}}</button>
@@ -35,17 +39,50 @@
             </td>
         </ng-container>
     </ng-container>
-
-
-
+    
     <ng-container *ngFor="let col of cols">
         <ng-container matColumnDef="{{col.name}}">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{col.label}} </th>
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header> {{col.label}} </th>
             <td mat-cell *matCellDef="let element"> {{element[col.name]}} </td>
         </ng-container>
     </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+ <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+ <ng-container matColumnDef="expandedDetail" >
+    <td mat-cell *matCellDef="let element " [attr.colspan]="displayedColumns.length">
+       <div class="table-element-detail row"
+        [@detailExpand]="(checkIfkeyExists(element,expandedCol)===true && element == expandedElement )  ? 'expanded' : 'collapsed'">
+     
+        <div class="col-md-6">
+            <table *ngIf="checkIfkeyExists(element,expandedCol) && element[expandedCol].length>0" class="table table-striped text-center" style="margin: auto;">
+                    <tr *ngIf="element[expandedCol].length>0">
+                        <th>Sr No.</th>
+                        <th *ngFor="let keys of getKeys(element[expandedCol][0])">{{toCapitalize(keys)}}</th>
+                    </tr>
+                    <tr *ngFor="let item of element[expandedCol];let i=index">
+                        <td>{{i+1}}</td>
+                        <td *ngFor="let keys of getKeys(element[expandedCol][0])">{{item[keys]}}</td>
+                    </tr>
+                </table>
+           </div>
+        
+        <div class="col-md-3 " *ngIf="checkIfkeyExists(element,'outcomeAchieved')">
+           <h2>Outcome Achieved</h2>
+            <p>{{element.outcomeAchieved}}</p>
+        </div> 
+      
+       </div>
+    </td>
+  </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"  class="table-element-row"
+    [class.table-expanded-row]="expandedElement === row"
+    (click)="expandedElement = expandedElement === row ? null : row"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="table-detail-row"></tr>
+
 </table>
 <div class="spinner-container" *ngIf="loading==0">
     <mat-spinner color="primary" mode="indeterminate"></mat-spinner>
@@ -58,6 +95,6 @@
 </ng-container>
 
 
-<mat-paginator (page)="pageChange($event)" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+<mat-paginator (page)="pageChange($event)" [pageSize]="page_size" [pageSizeOptions]="[5, 10, 25, 100]">
 </mat-paginator>
 </div>
